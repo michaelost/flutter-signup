@@ -2,6 +2,10 @@
 
 This is a Flutter project for creating a simple authentication page with validation.
 
+## Screenshot
+
+![Screenshot](screenshot.png)
+
 ## Prerequisites
 
 Before you can run this project, you need to have the following installed:
