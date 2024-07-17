@@ -27,6 +27,7 @@ class PasswordFieldWithValidator extends StatefulWidget {
 
 class _PasswordFieldWithValidatorState extends State<PasswordFieldWithValidator> {
   String _password = '';
+  bool _obscureText = true;
 
   @override
   void initState() {
@@ -37,6 +38,12 @@ class _PasswordFieldWithValidatorState extends State<PasswordFieldWithValidator>
   void _updatePassword() {
     setState(() {
       _password = widget.controller.text;
+    });
+  }
+
+  void _togglePasswordVisibility() {
+    setState(() {
+      _obscureText = !_obscureText;
     });
   }
 
@@ -51,11 +58,38 @@ class _PasswordFieldWithValidatorState extends State<PasswordFieldWithValidator>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CustomTextFormField(
+        TextFormField(
           controller: widget.controller,
-          labelText: widget.labelText,
-          hintText: widget.hintText,
-          obscureText: true,
+          obscureText: _obscureText,
+          decoration: InputDecoration(
+            labelText: widget.labelText,
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.grey, width: 1.0),
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.blue, width: 2.0),
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.red, width: 2.0),
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.red, width: 2.0),
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            disabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.grey[300]!, width: 1.0),
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            suffixIcon: IconButton(
+              icon: Icon(
+                _obscureText ? Icons.visibility : Icons.visibility_off,
+              ),
+              onPressed: _togglePasswordVisibility,
+            ),
+          ),
           validator: widget.validator,
         ),
         SizedBox(height: 10),

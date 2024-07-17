@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'custom_text_form_field.dart';
 import 'password_field_with_validator.dart';
 
 void main() {
@@ -89,10 +88,31 @@ class _AuthPageState extends State<AuthPage> {
           key: _formKey,
           child: Column(
             children: [
-              CustomTextFormField(
+              TextFormField(
                 controller: _emailController,
-                labelText: "Email",
-                hintText: "Enter your email address",
+                decoration: InputDecoration(
+                  labelText: "Email",
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.red, width: 2.0),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.red, width: 2.0),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  disabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey[300]!, width: 1.0),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter an email';
