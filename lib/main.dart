@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'custom_text_form_field.dart'; 
-import 'custom_sign_up_button.dart';  
+import 'custom_text_form_field.dart';
+import 'password_field_with_validator.dart';
 
 void main() {
   runApp(MyApp());
@@ -45,8 +45,42 @@ class _AuthPageState extends State<AuthPage> {
     );
   }
 
+  void _validateAndSubmit() {
+    final passwordFieldWithValidator = PasswordFieldWithValidator(
+      controller: _passwordController,
+      labelText: "Password",
+      hintText: "Enter a password",
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter a password';
+        }
+        return null;
+      },
+    );
+
+    if (_formKey.currentState!.validate() && passwordFieldWithValidator.isPasswordValid(_passwordController.text)) {
+      _showSuccessDialog();
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please fix the errors in red before submitting.')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final passwordFieldWithValidator = PasswordFieldWithValidator(
+      controller: _passwordController,
+      labelText: "Password",
+      hintText: "Enter a password",
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter a password';
+        }
+        return null;
+      },
+    );
+
     return Scaffold(
       appBar: AppBar(title: Text("Sign Up")),
       body: Padding(
@@ -58,6 +92,7 @@ class _AuthPageState extends State<AuthPage> {
               CustomTextFormField(
                 controller: _emailController,
                 labelText: "Email",
+                hintText: "Enter your email address",
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter an email';
@@ -70,30 +105,11 @@ class _AuthPageState extends State<AuthPage> {
                 },
               ),
               SizedBox(height: 20),
-              CustomTextFormField(
-                controller: _passwordController,
-                labelText: "Password",
-                obscureText: true,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a password';
-                  }
-                  if (value.length < 8 || value.length > 64) {
-                    return 'Password must be between 8 and 64 characters';
-                  }
-                  if (!RegExp(r'^(?=.*[A-Z])').hasMatch(value)) {
-                    return 'Password must contain at least one uppercase letter';
-                  }
-                  if (!RegExp(r'^(?=.*\d)').hasMatch(value)) {
-                    return 'Password must contain at least one digit';
-                  }
-                  return null;
-                },
-              ),
+              passwordFieldWithValidator,
               SizedBox(height: 20),
-              CustomSignUpButton(
-                formKey: _formKey,
-                onSuccess: _showSuccessDialog,
+              ElevatedButton(
+                onPressed: _validateAndSubmit,
+                child: Text("Sign up"),
               ),
             ],
           ),
